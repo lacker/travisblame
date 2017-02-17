@@ -38,21 +38,34 @@ export default class App extends React.Component {
       }
     );
 
-    return res;
+    let working = 0;
+    let queued = 0;
+    for (let build of res.data.builds) {
+      if (build.finished_at) {
+        continue;
+      }
+      for (let job of build.jobs) {
+        if (job.finished_at === null) {
+          if (job.started_at === null) {
+            queued++;
+          } else {
+            working++;
+          }
+        }
+      }
+      let update = {};
+      update[id] = {working: working, queued: queued};
+      this.setState(update);
+    }
   }
 
   async loadAll() {
     for (let repo of this.props.repos) {
-      let res = await this.loadRepo(repo.id);
+      await this.loadRepo(repo.id);
       for (let build of res.data.builds) {
         if (build.finished_at) {
           continue;
         }
-
-        // TODO: use job.started_at and job.finished_at
-        console.log(build.jobs[0]);
-        console.log(build.jobs[1]);
-        console.log(build.jobs[2]);
       }
     }
   }
@@ -61,6 +74,7 @@ export default class App extends React.Component {
     this.loadAll();
   }
 
+  // TODO: render using the state
   render() {
     return (
       <div>
