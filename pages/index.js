@@ -74,11 +74,29 @@ export default class App extends React.Component {
     this.loadAll();
   }
 
-  // TODO: render using the state
+  // TODO: test if it works ok, test if it looks pretty
   render() {
+    let rows = [];
+    for (let repo of this.props.repos) {
+      let display = {
+        slug: repo.slug,
+      };
+      let data = this.state[repo.id];
+      if (data) {
+        display.working = data.working;
+        display.queued = data.queued;
+        display.total = data.working + data.queued;
+      }
+      rows.push(data);
+    }
+    rows.sort((a, b) => {
+      return (a.total || 0) - (b.total || 0);
+    });
     return (
       <div>
-        {this.props.repos.map(repo => <div>{repo.id} - {repo.slug}</div>)}
+        {rows.map(r => (
+          <div>{r.slug} - {r.total} - {r.working} - {r.queued}</div>
+        ))}
       </div>
     );
   }
