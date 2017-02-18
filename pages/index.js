@@ -6,6 +6,14 @@ let ax = axios.create({
   timeout: 20000,
 });
 
+function preify(lines) {
+  return (
+    <pre>
+      {lines.join('\n')}
+    </pre>
+  );
+}
+
 export default class App extends React.Component {
   static async getInitialProps() {
     // Find all the FB repos
