@@ -6,6 +6,43 @@ let ax = axios.create({
   timeout: 20000,
 });
 
+// data is a list of lists of strings (or ints to be considered as strings)
+// each list in data should be the same length
+function linify(data) {
+  if (data.length === 0) {
+    return [];
+  }
+
+  let columnLengths = [];
+  for (let i = 0; i < data[0].length; i++) {
+    // Figure out how long column i needs to be
+    // First set the minimum
+    let columnLength = 8;
+    for (let row of data) {
+      columnLength = Math.max(
+        columnLength,
+        ('' + row[i]).length + 3
+      );
+    }
+    columnLengths.push(columnLength);
+  }
+
+  let lines = []
+  for (let row of data) {
+    let line = '';
+    for (let i = 0; i < columnLengths.length; i++) {
+      // An inefficient reimplementation of left-pad
+      let padded = row[i];
+      while (padded.length < columnLengths[i]) {
+        padded = ' ' + padded;
+      }
+      line += padded;
+    }
+    lines.push(line);
+  }
+  return lines;
+}
+
 function preify(lines) {
   return (
     <pre>
