@@ -7,6 +7,7 @@ let ax = axios.create({
 });
 
 // data is a list of lists of strings (or ints to be considered as strings)
+// null is treated like ''
 // each list in data should be the same length
 function linify(data) {
   if (data.length === 0) {
@@ -32,7 +33,7 @@ function linify(data) {
     let line = '';
     for (let i = 0; i < columnLengths.length; i++) {
       // An inefficient reimplementation of left-pad
-      let padded = row[i];
+      let padded = (row[i] === null) ? '' : row[i];
       while (padded.length < columnLengths[i]) {
         padded = ' ' + padded;
       }
@@ -119,7 +120,7 @@ export default class App extends React.Component {
     this.loadAll();
   }
 
-  // TODO: test if it works ok, test if it looks pretty
+  // TODO: test if it works ok
   render() {
     let rows = [];
     for (let repo of this.props.repos) {
@@ -139,8 +140,8 @@ export default class App extends React.Component {
     });
     return (
       <div>
-        {rows.map(r => (
-          <div>{r.slug} - {r.total} - {r.working} - {r.queued}</div>
+        {preify(linify(
+          rows.map(r => [r.slug, r.total, r.working, r.queued])
         ))}
       </div>
     );
