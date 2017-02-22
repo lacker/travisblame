@@ -133,7 +133,7 @@ export default class App extends React.Component {
         display.queued = data.queued;
         display.total = data.working + data.queued;
       }
-      rows.push(data);
+      rows.push(display);
     }
     rows.sort((a, b) => {
       return (a.total || 0) - (b.total || 0);
