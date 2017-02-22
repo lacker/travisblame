@@ -10,9 +10,11 @@ let ax = axios.create({
 // null is treated like ''
 // each list in data should be the same length
 function linify(data) {
+  console.log('XXX', data);
   if (data.length === 0) {
     return [];
   }
+  console.log('ZZZ', data);
 
   let columnLengths = [];
   for (let i = 0; i < data[0].length; i++) {
@@ -33,7 +35,7 @@ function linify(data) {
     let line = '';
     for (let i = 0; i < columnLengths.length; i++) {
       // An inefficient reimplementation of left-pad
-      let padded = (row[i] === null) ? '' : row[i];
+      let padded = (row[i] === null) ? '' : '' + row[i];
       while (padded.length < columnLengths[i]) {
         padded = ' ' + padded;
       }
