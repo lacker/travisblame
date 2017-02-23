@@ -10,18 +10,21 @@ let ax = axios.create({
 // null is treated like ''
 // each list in data should be the same length
 function linify(data) {
-  console.log('XXX', data);
   if (data.length === 0) {
     return [];
   }
-  console.log('ZZZ', data);
 
   let columnLengths = [];
-  for (let i = 0; i < data[0].length; i++) {
+  let numColumns = data[0].length;
+  for (let i = 0; i < numColumns; i++) {
     // Figure out how long column i needs to be
     // First set the minimum
     let columnLength = 8;
     for (let row of data) {
+      if (row.length !== numColumns) {
+        console.log(data);
+        throw new Error('you should call linify with same-len cols');
+      }
       columnLength = Math.max(
         columnLength,
         ('' + row[i]).length + 3
