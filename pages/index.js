@@ -38,7 +38,10 @@ function linify(data) {
     let line = '';
     for (let i = 0; i < columnLengths.length; i++) {
       // An inefficient reimplementation of left-pad
-      let padded = (row[i] === null) ? '' : '' + row[i];
+      let padded = '.';
+      if (row[i] !== null && row[i] !== undefined) {
+        padded = '' + row[i];
+      }
       while (padded.length < columnLengths[i]) {
         padded = ' ' + padded;
       }
@@ -113,11 +116,6 @@ export default class App extends React.Component {
   async loadAll() {
     for (let repo of this.props.repos) {
       await this.loadRepo(repo.id);
-      for (let build of res.data.builds) {
-        if (build.finished_at) {
-          continue;
-        }
-      }
     }
   }
 
@@ -141,7 +139,7 @@ export default class App extends React.Component {
       rows.push(display);
     }
     rows.sort((a, b) => {
-      return (a.total || 0) - (b.total || 0);
+      return (b.total || 0) - (a.total || 0);
     });
     return (
       <div>
