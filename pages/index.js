@@ -141,11 +141,11 @@ export default class App extends React.Component {
     rows.sort((a, b) => {
       return (b.total || 0) - (a.total || 0);
     });
+    let content = rows.map(r => [r.slug, r.total, r.working, r.queued]);
+    let headers = ['repo', 'total jobs', 'working', 'queued'];
     return (
       <div>
-        {preify(linify(
-          rows.map(r => [r.slug, r.total, r.working, r.queued])
-        ))}
+        {preify(linify(headers.concat(content)))}
       </div>
     );
   }
