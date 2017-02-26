@@ -120,6 +120,7 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
+    // TODO: only run this on the client. check if terminal errors gone
     this.loadAll();
   }
 
