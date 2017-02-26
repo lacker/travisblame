@@ -145,7 +145,7 @@ export default class App extends React.Component {
     let headers = ['repo', 'total jobs', 'working', 'queued'];
     return (
       <div>
-        {preify(linify(headers.concat(content)))}
+        {preify(linify([headers].concat(content)))}
       </div>
     );
   }
