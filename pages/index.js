@@ -107,10 +107,11 @@ export default class App extends React.Component {
           }
         }
       }
-      let update = {};
-      update[id] = {working: working, queued: queued};
-      this.setState(update);
     }
+    let update = {};
+    update[id] = {working: working, queued: queued};
+    console.log(update);
+    this.setState(update);    
   }
 
   async loadAll() {
