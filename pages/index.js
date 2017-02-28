@@ -111,7 +111,7 @@ export default class App extends React.Component {
     let update = {};
     update[id] = {working: working, queued: queued};
     console.log(update);
-    this.setState(update);    
+    this.setState(update);
   }
 
   async loadAll() {
@@ -129,7 +129,7 @@ export default class App extends React.Component {
     let rows = [];
     for (let repo of this.props.repos) {
       let display = {
-        slug: repo.slug,
+        slug: repo.slug.replace(/.*\//, ''),
       };
       let data = this.state[repo.id];
       if (data) {
