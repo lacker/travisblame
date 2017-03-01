@@ -114,17 +114,26 @@ export default class App extends React.Component {
     this.setState(update);
   }
 
-  async loadAll() {
+  async loadSerial() {
     for (let repo of this.props.repos) {
       await this.loadRepo(repo.id);
     }
   }
 
-  componentDidMount() {
-    this.loadAll();
+  // TODO: test if this works
+  async loadParallel() {
+    let promises = [];
+    for (let repo of this.props.repos) {
+      promises.push(this.loadRepo(repo.id));
+    }
+    await Promise.all(promises);
   }
 
-  // TODO: test if it works ok
+  componentDidMount() {
+    this.loadSerial();
+  }
+
+  // TODO: try overall, look for improvements
   render() {
     let rows = [];
     for (let repo of this.props.repos) {
