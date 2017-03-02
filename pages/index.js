@@ -22,7 +22,6 @@ function linify(data) {
     let columnLength = 8;
     for (let row of data) {
       if (row.length !== numColumns) {
-        console.log(data);
         throw new Error('you should call linify with same-len cols');
       }
       columnLength = Math.max(
@@ -110,17 +109,17 @@ export default class App extends React.Component {
     }
     let update = {};
     update[id] = {working: working, queued: queued};
-    console.log(update);
     this.setState(update);
   }
 
+  // A pointlessly slow version of loadParallel
   async loadSerial() {
     for (let repo of this.props.repos) {
       await this.loadRepo(repo.id);
     }
   }
 
-  // TODO: test if this works
+  // Loads everything in parallel
   async loadParallel() {
     let promises = [];
     for (let repo of this.props.repos) {
@@ -129,11 +128,23 @@ export default class App extends React.Component {
     await Promise.all(promises);
   }
 
-  componentDidMount() {
-    this.loadSerial();
+  async reloadNonzero() {
+    let promises = [];
+    for (let repo of this.props.repos) {
+      let data = this.state[repo.id];
+      if (data && data.total > 0) {
+        promises.push(this.loadRepo(repo.id));
+      }
+    }
+    await Promise.all(promises);
   }
 
-  // TODO: try overall, look for improvements
+  // TODO: something more aggressive
+  componentDidMount() {
+    this.loadParallel();
+  }
+
+  // TODO: try overall, look for UI improvements, or more data
   render() {
     let rows = [];
     for (let repo of this.props.repos) {
