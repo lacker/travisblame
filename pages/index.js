@@ -128,6 +128,7 @@ export default class App extends React.Component {
     await Promise.all(promises);
   }
 
+  // TODO: test if this works
   async reloadNonzero() {
     let promises = [];
     for (let repo of this.props.repos) {
