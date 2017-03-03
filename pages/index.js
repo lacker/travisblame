@@ -141,9 +141,9 @@ export default class App extends React.Component {
 
   async loadForever() {
     while (true) {
-      this.loadParallel();
+      await this.loadParallel();
       for (let i = 0; i < 10; i++) {
-        this.reloadNonzero();
+        await this.reloadNonzero();
       }
     }
   }
