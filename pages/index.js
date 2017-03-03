@@ -173,9 +173,10 @@ export default class App extends React.Component {
     });
     let content = rows.map(r => [r.slug, r.total, r.working, r.queued]);
     let headers = ['repo', 'total jobs', 'working', 'queued'];
+    let lines = headers.map(h => h.replace(/./g, '-'));
     return (
       <div>
-        {preify(linify([headers].concat(content)))}
+        {preify(linify([headers, lines].concat(content)))}
       </div>
     );
   }
