@@ -128,7 +128,6 @@ export default class App extends React.Component {
     await Promise.all(promises);
   }
 
-  // TODO: test if this works
   async reloadNonzero() {
     let promises = [];
     for (let repo of this.props.repos) {
@@ -140,9 +139,18 @@ export default class App extends React.Component {
     await Promise.all(promises);
   }
 
-  // TODO: something more aggressive
+  async loadForever() {
+    while (true) {
+      this.loadParallel();
+      for (let i = 0; i < 10; i++) {
+        this.reloadNonzero();
+      }
+    }
+  }
+
+  // TODO: test how well this works
   componentDidMount() {
-    this.loadParallel();
+    this.loadForever();
   }
 
   // TODO: try overall, look for UI improvements, or more data
